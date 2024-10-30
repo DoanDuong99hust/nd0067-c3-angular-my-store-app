@@ -1,0 +1,9 @@
+<section class="product-list">
+    <mat-grid-list cols="3" rowHeight="1:1.5">
+        @for (product of products; track $index) {
+            <mat-grid-tile>
+                <app-product-item [product]="product"></app-product-item>
+            </mat-grid-tile>
+        }
+    </mat-grid-list>
+</section>

@@ -1,0 +1,44 @@
+<section *ngIf="!submitted" class="cart">
+    <div class="cart-container">
+        <div class="cart-item-details">
+            <div class="cart-item" *ngFor="let product of cartItems">
+                <img [src]="product.url" alt="">
+                <div>
+                    <b>{{product.name}}</b>
+                    <p>{{product.price | currency: 'USD'}}</p>
+                    <input (change)="handleQuantityValue(product.quantity, product.id)" [(ngModel)]="product.quantity" type="number" class="select-input">
+                </div>
+            </div>
+            <h1>Total: {{total | currency: 'USD'}}</h1>
+        </div>
+        <div class="cart-panel">
+            <div class="form-margin">
+                <div class="form-group">
+                    <label>Full name</label><br>
+                    <input type="text" class="number-input form-control" 
+                        [(ngModel)]="customerInfo.fullname" 
+                        placeholder="(minimum 3 characters)">
+                </div>
+                <div class="form-group">
+                    <label>Address</label><br>
+                    <input type="text" class="number-input form-control" 
+                        [(ngModel)]="customerInfo.address" 
+                        placeholder="(minimum 6 characters)">
+                </div>
+                <div class="form-group">
+                    <label>Credit Cart Number</label><br>
+                    <input type="text" class="number-input form-control" 
+                        [(ngModel)]="customerInfo.creditCartNumber" 
+                        placeholder="(16-digit number)">
+                </div>
+                <br>
+                <small>We'll not share your payment infomation with anyone else.</small>
+                <br><br>
+                <button type="submit" (click)="submit()" 
+                    [disabled]="!(customerInfo.fullname !== '' && customerInfo.address !== '' && customerInfo.creditCartNumber !=='')"
+                >Submit</button>
+            </div>
+        </div>
+    </div>
+</section>
+<app-confirmation *ngIf="submitted" [name]="customerInfo.fullname" [total]="total"></app-confirmation>

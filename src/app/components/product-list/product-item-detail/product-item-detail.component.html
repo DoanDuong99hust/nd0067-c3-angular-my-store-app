@@ -1,0 +1,17 @@
+<section class="detail">
+    <div class="detail-container">
+        <img [src]="product.url" alt="" srcset="">
+        <div class="detail-item">
+            <h2>{{product.name}}</h2>
+            <p>{{product.price | currency: 'USD'}}</p>
+            <p>{{product.description}}</p>
+            <select class="select-input" [(ngModel)]="product.quantity">
+                <option *ngFor="let num of [1,2,3,4,5,6,7,8,9,10]" value="{{num}}">{{num}}</option>
+            </select>            
+            <button type="submit" (click)="addToCart()" >Add to cart</button>
+            <div class="back-link">
+                <a href="/product-list">Back to product list</a>
+            </div>
+        </div>
+    </div>
+</section>
