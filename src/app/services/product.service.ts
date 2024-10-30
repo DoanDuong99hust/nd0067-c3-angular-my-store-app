@@ -19,8 +19,10 @@ export class ProductService {
         //         subscriber.next(res as ProductModel[])
         //     });
         // })
-        this.http.get(this.url).subscribe(res => {
-            this.products = res as ProductModel[];
+        this.http.get(this.url).subscribe(data => {
+            for (let item of data as ProductModel[]) {
+                this.products.push(item)
+            }
         });
     }
 
