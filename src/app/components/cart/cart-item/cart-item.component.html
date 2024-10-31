@@ -1,0 +1,8 @@
+<div class="cart-item">
+    <img [src]="product.url" alt="">
+    <div>
+        <b>{{product.name}}</b>
+        <p>{{product.price | currency: 'USD'}}</p>
+        <input (ngModelChange)="handleQuantityValue($event)" [(ngModel)]="product.quantity" type="number" class="select-input">
+    </div>
+</div>

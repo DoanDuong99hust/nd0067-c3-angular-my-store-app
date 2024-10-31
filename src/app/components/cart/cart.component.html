@@ -1,43 +1,76 @@
 <section *ngIf="!submitted" class="cart">
     <div class="cart-container">
         <div class="cart-item-details">
-            <div class="cart-item" *ngFor="let product of cartItems">
-                <img [src]="product.url" alt="">
-                <div>
-                    <b>{{product.name}}</b>
-                    <p>{{product.price | currency: 'USD'}}</p>
-                    <input (change)="handleQuantityValue(product.quantity, product.id)" [(ngModel)]="product.quantity" type="number" class="select-input">
-                </div>
-            </div>
+            <app-cart-item *ngFor="let product of cartItems" [item]="product" (handleQuantityValue)="handleQuantityValue($event)"></app-cart-item>
             <h1>Total: {{total | currency: 'USD'}}</h1>
         </div>
         <div class="cart-panel">
-            <div class="form-margin">
+            <form #inforForm="ngForm" class="form-margin">
                 <div class="form-group">
                     <label>Full name</label><br>
                     <input type="text" class="number-input form-control" 
-                        [(ngModel)]="customerInfo.fullname" 
+                        [(ngModel)]="customerInfo.fullname"
+                        #fullname="ngModel"
+                        name="fullname"
+                        minlength="3"
+                        required 
                         placeholder="(minimum 3 characters)">
-                </div>
+                        <div style="color: red;" *ngIf="fullname.touched && fullname.errors">
+                            <small *ngIf="fullname?.errors?.['minlength']">
+                                The fullname must contain at least 3 characters.
+                            </small>
+                            <small *ngIf="fullname?.errors?.['required']">
+                                Please provide fullname.
+                            </small>
+                        </div>
+                </div><br>
                 <div class="form-group">
                     <label>Address</label><br>
                     <input type="text" class="number-input form-control" 
-                        [(ngModel)]="customerInfo.address" 
+                        [(ngModel)]="customerInfo.address"
+                        name="address"
+                        #address="ngModel"
+                        minlength="6"
+                        required
                         placeholder="(minimum 6 characters)">
-                </div>
+                    <div style="color: red;" *ngIf="address.touched && address.errors">
+                        <small *ngIf="address?.errors?.['minlength']">
+                            The address must contain at least 6 characters.
+                        </small>
+                        <small *ngIf="address?.errors?.['required']">
+                            Please provide address.
+                        </small>
+                    </div>
+                </div><br>
                 <div class="form-group">
                     <label>Credit Cart Number</label><br>
                     <input type="text" class="number-input form-control" 
                         [(ngModel)]="customerInfo.creditCartNumber" 
+                        name="creditCartNumber"
+                        #creditCartNumber="ngModel"
+                        required
+                        minlength="16"
+                        maxlength="16"
+                        pattern="^[0-9]{16}"
                         placeholder="(16-digit number)">
+                    <div style="color: red;" *ngIf="creditCartNumber.touched && creditCartNumber.errors">
+                        <small *ngIf="creditCartNumber?.errors?.['minlength']">
+                            The credit cart number must contain 16 characters.
+                        </small><br>
+                        <small *ngIf="creditCartNumber?.errors?.['required']">
+                            Please provide credit cart number.
+                        </small><br>
+                        <small *ngIf="creditCartNumber?.errors?.['pattern']">
+                            Please provide a correct credit cart number.
+                        </small>
+                    </div>
                 </div>
                 <br>
                 <small>We'll not share your payment infomation with anyone else.</small>
                 <br><br>
-                <button type="submit" (click)="submit()" 
-                    [disabled]="!(customerInfo.fullname !== '' && customerInfo.address !== '' && customerInfo.creditCartNumber !=='')"
+                <button type="submit" (click)="submit()" [disabled]="inforForm.invalid"
                 >Submit</button>
-            </div>
+            </form>
         </div>
     </div>
 </section>

@@ -6,11 +6,12 @@ import { CommonModule } from '@angular/common';
 import { ProductService } from '../../services/product.service';
 import { Subscription } from 'rxjs';
 import { ConfirmationComponent } from "../confirmation/confirmation.component";
+import { CartItemComponent } from "./cart-item/cart-item.component";
 
 @Component({
   selector: 'app-cart',
   standalone: true,
-  imports: [CommonModule, FormsModule, ConfirmationComponent],
+  imports: [CommonModule, FormsModule, ConfirmationComponent, CartItemComponent],
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.scss'
 })
@@ -39,8 +40,10 @@ export class CartComponent implements OnInit {
 
   }
 
-  handleQuantityValue(quantity: number, id: number) {
+  handleQuantityValue(product: ProductModel) {
     this.total = 0;
+    let id = product.id;
+    let quantity = product.quantity;
     this.cartItems.forEach(item => {
       if (id === item.id) {
         item.quantity = quantity
@@ -49,14 +52,8 @@ export class CartComponent implements OnInit {
     })
 
     if (quantity === 0) {
-      this.cartService.removeItemFromCart(id);
-      let newCartItems: ProductModel[] = [];
-      this.cartItems.forEach(item => {
-        if (item.id != id) {
-          newCartItems.push(item);
-        }
-      })
-      this.cartItems = newCartItems;
+      this.cartItems = this.cartItems.filter(item => product.id != item.id);
+      window.alert('Removed from cart!')
     }
   }
 
